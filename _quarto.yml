@@ -19,11 +19,7 @@ website:
       - href: Discussion.qmd
         text: Discussion
       - href: Conclusion.qmd
-        text: Conclusion
-        
-      
-
-        
+        text: Conclusio
               
 
 format:

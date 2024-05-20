@@ -2,24 +2,12 @@
 title: "Result"
 output:
   html_document: default
-  bibliography: References.bib
-
 ---
 
 ## Result: 
 
 Community Composition: The results indicate a diverse community of Alpha-Proteobacteria with significant variations in community structure across different sampling points.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("treeio")
-BiocManager::install("ggtreeExtra")
-force = TRUE
-```
 
 ```{r}
 library(tidyverse)

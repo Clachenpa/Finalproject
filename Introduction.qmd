@@ -6,20 +6,29 @@ editor: visual
 
 ### **Introduction**
 
-Background information on Proteobacteria: Alpha-Proteobacteria are distinguished by their variety of metabolisms and capacity to fit into a range of environmental niches. The species in this class are essential to the nitrogen cycle, an important biological activity in wetlands.
+Chase Lake Wetlands, also known as Woodworth (WOOD), is a terrestrial NEON field site located near Woodworth, North Dakota, managed by the U.S. Fish and Wildlife Service and the U.S. Geological Survey as part of the Chase Lake National Wildlife Refuge (NWR). Covering an 11 km² area, WOOD features a mix of grasslands, agricultural areas, and wetlands within the Missouri Coteau region, known for its prairie potholes formed by glacial activity. The region has a continental climate with significant temperature variations and moderate annual precipitation (330-508 mm). Winters can drop below -17.8°C, and summers can exceed 32°C. The climate is characterized by strong winds, thunderstorms, and extreme weather events, including hailstorms and tornadoes. The area has a long history of Native American presence and later European settlement. Established in 1908, Chase Lake NWR has been used for wildlife studies since 1969, focusing on the effects of grazing, burning, and cropping. The refuge aims to maintain ecosystem health and biodiversity, with a focus on research and recreation. Historical land management practices like grazing and burning are continued to promote native plant growth. The Chase Lake Wetlands are a notable region for studying various ecosystems, including microbial communities. Among these microbial communities, Alphaproteobacteria play a significant role due to their diversity and ecological functions.
 
-Research Gap: The majority of earlier research has been on larger creatures or the chemical properties of wetlands. Systematic microbial genomic investigations are lacking in the Chase Lake Wetlands, especially with regard to how Alpha-Proteobacteria react to environmental factors.
+([NEONScience, n.d.](https://derekyee21.github.io/Final-Project/Introduction.html#ref-noauthor_chase_nodate))
 
-Study Objectives: By mapping the diversity of Alpha-Proteobacteria and examining their relationships with environmental variables including nutrient levels and water quality, this project aims to close these gaps.
+Alphaproteobacteria are a diverse and extensively studied group of bacteria that include a variety of phototrophs, chemolithotrophs, chemoorganotrophs, and aerobic photoheterotrophs. Taxonomically, alphaproteobacteria are classified as a class within the phylum Proteobacteria. Alphaproteobacteria make up most phototrophic genera and symbionts of plants and animals and are abundant in terrestrial and marine environments. Alphaproteobacteria are crucial in both agricultural and medical contexts due to their associations with eukaryotic organisms. For instance, members of the Rhizobiaceae family form symbiotic relationships with plant root nodules, playing a significant role in atmospheric nitrogen fixation. Other alphaproteobacteria, such as those in the Rickettsiales order, have adapted to intracellular lifestyles, acting as pathogens to humans and animals. The phylogeny of Alphaproteobacteria is complex and subject to ongoing revision, partly due to differences in genome characteristics like GC-content. Some debates exist regarding the placement of certain groups, such as Magnetococcidae, with proposals for reclassifying them into a separate class. Recent phylogenomic studies suggest that the protomitochondrial clade diverged early from the rest of the Alphaproteobacteria, indicating its unique evolutionary position.
 
-\[\@noauthor_chase_nodate\]
+([ScienceDirect 2005](https://derekyee21.github.io/Final-Project/Introduction.html#ref-noauthor_alpha-proteobacteria_nodate))
 
-\[\@noauthor_alpha-proteobacteria_nodate\]
+([Collier 2016](https://derekyee21.github.io/Final-Project/Introduction.html#ref-collier_cell_2016))
 
-\[\@collier_cell_2016\]
+([Sun et al. 2021](https://derekyee21.github.io/Final-Project/Introduction.html#ref-sun_angiogenin_2021))
 
-\[\@sun_angiogenin_2021\]
-
-\[\@francez-charlot_general_2015\]
+([Francez-Charlot et al. 2015](https://derekyee21.github.io/Final-Project/Introduction.html#ref-francez-charlot_general_2015))
 
 \
+**References**
+
+Collier, Justine. 2016. “Cell Cycle Control in Alphaproteobacteria.” Journal Article. <https://www.sciencedirect.com/science/article/pii/S1369527416000126?via%3Dihub>.
+
+Francez-Charlot, Anne, Andreas Kaczmarczyk, Hans-Martin Fischer, and Julia A. Vorholt. 2015. “The General Stress Response in Alphaproteobacteria.” Journal Article. <https://www.sciencedirect.com/science/article/pii/S0966842X14002509?via%3Dihub>.
+
+NEONScience. n.d. “Chase Lake National Wildlife Refuge NEON / WOOD.” Website. <https://www.neonscience.org/field-sites/wood>.
+
+ScienceDirect. 2005. “Alpha-Proteobacteria.” Website. <https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/alpha-proteobacteria>.
+
+Sun, Desen, Rongpan Bai, Wei Zhou, Zhengrong Yao, Yaxin Liu, Shasha Tang, Xiaolong Ge, et al. 2021. “Angiogenin Maintains Gut Microbe Homeostasis by Balancing α-Proteobacteria and Lachnospiraceae.” Journal Article. <https://gut.bmj.com/content/70/4/666>.

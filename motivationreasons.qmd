@@ -6,6 +6,4 @@ editor: visual
 
 ### **Motivating Reasons**
 
-### Microbial Ecology Interest: This study is motivated by a growing body of research that aims to comprehend the ways in which microbial communities both impact and are impacted by wetland ecosystems. Microbes are essential to the biological operations that wetlands perform, such as carbon storage and water purification.
-
-Environmental Impact: Research on these microbes helps forecast how changes in the environment will affect the health of wetlands and guides conservation efforts. The distinctive ecological features of the Chase Lake Wetlands, along with the challenges posed by climate change and agricultural runoff, make them an essential case study.
+### One motivation for this research stems from an increasing scientific interest in understanding how microbial communities influence and are influenced by different ecosystems and environmental factors. We will be focusing our study on Alphaproteobacteria and the Chase Lake Wetlands. Wetlands serve crucial ecological functions, including water filtration and carbon storage, and microbes are at the heart of these processes. These microbial communities, like Alphaproteobacteria, are sensitive to environmental changes and are able to provide early warning signs of ecosystem stress or degradation. Another one of our motivating reasons is the environmental impact. Studying these microorganisms.

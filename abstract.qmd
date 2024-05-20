@@ -4,8 +4,6 @@ format: html
 editor: visual
 ---
 
-## 
-
 **Abstract**
 
 This study examines the ecological roles and diversity of Alpha-Proteobacteria in the Chase Lake Wetlands of North Dakota, with a particular emphasis on how these microorganisms respond to various environmental factors. The study finds important taxa in this phylum and investigates their possible roles in the wetland environment by examining genomic data gathered from the NEON project. According to initial results, there is a substantial relationship between water quality indexes and microbial diversity.![](images/finalprojectpic.jpg)

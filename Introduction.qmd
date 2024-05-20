@@ -21,7 +21,7 @@ Alphaproteobacteria are a diverse and extensively studied group of bacteria that
 ([Francez-Charlot et al. 2015](https://derekyee21.github.io/Final-Project/Introduction.html#ref-francez-charlot_general_2015))
 
 \
-**References**
+\## **References**
 
 Collier, Justine. 2016. “Cell Cycle Control in Alphaproteobacteria.” Journal Article. <https://www.sciencedirect.com/science/article/pii/S1369527416000126?via%3Dihub>.
 

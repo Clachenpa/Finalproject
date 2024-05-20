@@ -6,7 +6,7 @@ editor: visual
 
 ## **Methods**
 
-Metagenomic sequencing data was obtained from National Ecological Observatory Network **(NEON) MAGs** (Metagenome-Assembled Genomes) datasets, focusing on samples collected from the Chase Lake Wetlands over the spring and summer of 2024. These datasets include comprehensive genomic information that allows for detailed taxonomic and ecological analyses.
+## Metagenomic sequencing data was obtained from National Ecological Observatory Network **(NEON) MAGs** (Metagenome-Assembled Genomes) datasets, focusing on samples collected from the Chase Lake Wetlands over the spring and summer of 2024. These datasets include comprehensive genomic information that allows for detailed taxonomic and ecological analyses.
 
 To investigate bacterial genomes and taxonomic groups at Chase Lake Wetlands, Alphaproteobacteria, a diverse and ecologically significant group of bacteria within the phylum Proteobacteria, was the main focus.
 

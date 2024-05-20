@@ -4,23 +4,8 @@ format: html
 editor: visual
 ---
 
-## Quarto
+### **Motivating Reasons**
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+IMicrobial Ecology Interest: This study is motivated by a growing body of research that aims to comprehend the ways in which microbial communities both impact and are impacted by wetland ecosystems. Microbes are essential to the biological operations that wetlands perform, such as carbon storage and water purification.
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+Environmental Impact: Research on these microbes helps forecast how changes in the environment will affect the health of wetlands and guides conservation efforts. The distinctive ecological features of the Chase Lake Wetlands, along with the challenges posed by climate change and agricultural runoff, make them an essential case study.

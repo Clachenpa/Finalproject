@@ -4,23 +4,10 @@ format: html
 editor: visual
 ---
 
-## Quarto
+### **Discussion**
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Interpretation of Results: The variety of Alpha-Proteobacteria and their relationship to nitrogen levels indicate that these microorganisms are important for the nitrogen cycle in the wetland, which may have an impact on the health of the ecosystem as a whole.
 
-## Running Code
+Implications for Wetland Management: Knowledge of these connections can direct conservation initiatives and aid in the prediction of the effects of fertilizer loading on microbial populations.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+Study limitations : The study's limitations stem from the way it relies on data from a single season, which might leave out seasonal fluctuations in microbial activity.

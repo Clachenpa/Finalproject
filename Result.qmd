@@ -1,14 +1,17 @@
 ---
 title: "Result"
-execute: 
-  warning: false
-  error: false
-  code-fold: true
+output:
+  html_document: default
+  bibliography: References.bib
+
 ---
+
+## Result: 
+
+Community Composition: The results indicate a diverse community of Alpha-Proteobacteria with significant variations in community structure across different sampling points.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -17,7 +20,6 @@ BiocManager::install("treeio")
 BiocManager::install("ggtreeExtra")
 force = TRUE
 ```
-
 
 ```{r}
 library(tidyverse)
@@ -57,8 +59,6 @@ NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") %>
   # separate the plot info into 3 columns
   separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
 ```
-
-
 
 ```{r}
 NEON_metagenomes <- read_tsv("data/NEON/exported_img_data_Gs0161344_NEON.tsv") %>% 
@@ -117,6 +117,8 @@ ggplot(aes(x = `soilTemp.x`, y = Site.x)) +
 
 ## The distribution of soil temperatures at several NEON locations, including Chase Lake Wetlands, is shown in this boxplot. The information shows the regional variations in soil temperature.
 
+
+
 ```{r}
 ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `soilTemp.x`, y = `Ecosystem Subtype.x`, color = Class)) +
   geom_point() +
@@ -126,8 +128,7 @@ ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `soilTemp.x`
        color = "Class")
 ```
 
-## The link between soil temperature and Alpha-Proteobacteria ecosystem subtype is seen in this scatterplot. The map makes it easier to see which subtypes of ecosystems are linked to certain temperature ranges.}
-
+## The link between soil temperature and Alpha-Proteobacteria ecosystem subtype is seen in this scatterplot. The map makes it easier to see which subtypes of ecosystems are linked to certain temperature ranges.
 
 ```{r}
 ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `soilInCaClpH.x`, y = nlcdClass.x, color = Class)) +
@@ -137,7 +138,9 @@ ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `soilInCaClp
        y = "nlcdClass",
        color = "Class")
 ```
-## This scatterplot shows how soil pH affects the distribution of Alpha-Proteobacteria across various land cover types by displaying the link between soil pH and the National Land Cover Database (NLCD) class.
+
+## This scatterplot shows how soil pH affects the distribution of Alpha-Proteobacteria across various land cover types by displaying the link between soil pH and the National Land Cover Database (NLCD) class.}
+
 
 
 
@@ -148,7 +151,7 @@ ggplot(aes(x = `Total Number of Bases`)) +
 
 ```
 
-## The overall distribution of total bases in the Alpha-Proteobacteria genomic data is represented by this histogram, which also displays the frequency of various sequence lengths.}
+## The overall distribution of total bases in the Alpha-Proteobacteria genomic data is represented by this histogram, which also displays the frequency of various sequence lengths.
 
 
 ```{r}
@@ -170,8 +173,7 @@ ggplot(aes(x = fct_infreq(`Site ID`))) +
 
 ```
 
-## This bar plot shows the frequency of Alpha-Proteobacteria sequences across different NEON sites.}
-
+## This bar plot shows the frequency of Alpha-Proteobacteria sequences across different NEON sites}
 
 
 ```{r}
@@ -187,7 +189,7 @@ ggplot(aes(x = `tRNA Genes`)) +
 
 ```
 
-## This histogram shows the distribution of gene counts and tRNA genes in the Alpha-Proteobacteria genomic data, illustrating the genomic complexity of these bacteria.}
+## This histogram shows the distribution of gene counts and tRNA genes in the Alpha-Proteobacteria genomic data, illustrating the genomic complexity of these bacteria
 
 
 
@@ -216,7 +218,6 @@ ggplot(aes(x = `Scaffold Count`, y = `Site.x`)) +
   geom_boxplot()
 
 ```
-
 ## This boxplot shows the distribution of scaffold counts (segments of DNA) across different sites and ecosystem subtypes.
 
 
@@ -241,8 +242,7 @@ ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `Bin Complet
 
 ```
 
-## This scatterplot shows the relationship between depth and elevation for Alpha-Proteobacteria, as well as the relationship between bin completeness and contamination.}
-
+## This scatterplot shows the relationship between depth and elevation for Alpha-Proteobacteria, as well as the relationship between bin completeness and contamination}
 
 
 ```{r}
@@ -261,7 +261,8 @@ ggplot(aes(x = `Gene Count`, y = `Scaffold Count`)) +
   geom_boxplot()
 ```
 
-## This scatterplot and boxplot show the relationship between gene count and scaffold count for Alpha-Proteobacteria, indicating the genomic assembly quality.
+```{## This scatterplot and boxplot show the relationship between gene count and scaffold count for Alpha-Proteobacteria, indicating the genomic assembly quality.}
+```
 
 
 ```{r}
@@ -379,6 +380,7 @@ ggtree(tree_Alphaproteobacteria, layout="circular")  %<+%
 ## This circular phylogenetic tree represents the evolutionary relationships among Alpha-Proteobacteria, with annotations for different sites and assembly types.
 
 
+
 ```{r}
 NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON.csv") %>% 
   # remove columns that are not needed for data analysis
@@ -420,8 +422,6 @@ NEON_MAGs_bact_ind %>%
 
 ## This is a scatter plot that shows how different phyla's gene numbers are distributed across site. Every dot is a unique combination of a site and a phylum; the phylum is shown by the dot's position on the y-axis, and the site is indicated by its position on the x-axis. The legend on the right side of the graph indicates which phyla are represented by the color of the dots.
 
-
-
 ```{r}
 NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON.csv") %>% 
   # remove columns that are not needed for data analysis
@@ -461,7 +461,6 @@ kable(
 
 ## The distribution of bacterial classes in the Chase Lake Wetlands is shown in this bar graph. The y-axis lists the different bacterial classes found in the samples, while the x-axis indicates the number of incidences for each bacterial class.}
 
-
 ```{r}
 library(ggplot2)
 
@@ -484,9 +483,10 @@ ggplot(data, aes(x = reorder(Site, Count), y = Count)) +
 
 ```
 
-![](images/Screenshot 2024-05-19 at 8.11.46 PM.png)
+![](images/Screenshot%202024-05-19%20at%208.10.53%20PM.png)
 
-![](images/Screenshot 2024-05-19 at 8.10.53 PM.png)
+![](images/Screenshot%202024-05-19%20at%208.11.46%20PM.png)
 
 ## This individual taxonomic tree shows the taxonomic lineage from alphaproteobacteria which shows all the bacteria that evolved from it.
+
 

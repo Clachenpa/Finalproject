@@ -4,7 +4,13 @@ format: html
 editor: visual
 ---
 
-## 
+### **Introduction**
+
+Background information on Proteobacteria: Alpha-Proteobacteria are distinguished by their variety of metabolisms and capacity to fit into a range of environmental niches. The species in this class are essential to the nitrogen cycle, an important biological activity in wetlands.
+
+Research Gap: The majority of earlier research has been on larger creatures or the chemical properties of wetlands. Systematic microbial genomic investigations are lacking in the Chase Lake Wetlands, especially with regard to how Alpha-Proteobacteria react to environmental factors.
+
+Study Objectives: By mapping the diversity of Alpha-Proteobacteria and examining their relationships with environmental variables including nutrient levels and water quality, this project aims to close these gaps.
 
 \[\@noauthor_chase_nodate\]
 

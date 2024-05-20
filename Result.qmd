@@ -1,7 +1,9 @@
 ---
 title: "Result"
-output:
-  html_document: default
+execute: 
+  warning: false
+  error: false
+  code-fold: true
 ---
 
 ## Result: 

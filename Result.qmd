@@ -1,26 +1,506 @@
 ---
-title: "Result"
-format: html
-editor: visual
+title: "Results"
+Author: "Chewang Diki Lachenpa"
+output:
+  html_document: default
+  bibliography: References.bib
 ---
 
-## Quarto
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
-## Running Code
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
+BiocManager::install("treeio")
+BiocManager::install("ggtreeExtra")
+force = TRUE
 ```
 
-You can add options to executable code like this
-
 ```{r}
-#| echo: false
-2 * 2
+library(tidyverse)
+library(knitr)
+library(ggtree)
+library(TDbook)
+library(ggimage)
+library(rphylopic)
+library(treeio)
+library(tidytree)
+library(ape)
+library(TreeTools)
+library(phytools)
+library(ggnewscale)
+library(ggtreeExtra)
+library(ggstar)
+library(DT)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+```         
+```
+
+```{r}
+NEON_metagenomes <- read_tsv("data/NEON/exported_img_data_Gs0161344_NEON.tsv") %>% 
+  rename(`Genome Name` = `Genome Name / Sample Name`) %>% 
+  filter(str_detect(`Genome Name`, 're-annotation', negate = T)) %>% 
+  filter(str_detect(`Genome Name`, 'WREF plot', negate = T))
+```
+
+```{r}
+NEON_metagenomes <- NEON_metagenomes %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-") 
+```
+
+```{r}
+NEON_chemistry <- read_tsv("data/NEON/neon_plot_soilChem1_metadata.tsv") %>% 
+  # remove -COMP from genomicsSampleID
+  mutate_at("genomicsSampleID", str_replace, "-COMP", "") 
+```
+
+```{r}
+kable(
+  NEON_chemistry_description <- read_tsv("data/NEON/neon_soilChem1_metadata_descriptions.tsv") 
+)
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry <- NEON_MAGs %>% 
+  left_join(NEON_metagenomes, by = "Sample Name") %>%
+  left_join(NEON_chemistry, by = c("Sample Name" = "genomicsSampleID")) %>%
+  filter(`Class` == "Alphaproteobacteria")
+head(NEON_MAGs_metagenomes_chemistry)
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria <- NEON_MAGs_metagenomes_chemistry%>%
+  left_join(NEON_metagenomes, by = "Sample Name") %>%
+  left_join(NEON_chemistry, by = c("Sample Name" = "genomicsSampleID")) %>%
+  filter(`Class`== "Alphaproteobacteria")
+head(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria)
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>%  
+ggplot(aes(x = `soilTemp.x`, y = Site.x)) +
+  geom_boxplot()
+```
+
+```{## The distribution of soil temperatures at several NEON locations, including Chase Lake Wetlands, is shown in this boxplot. The information shows the regional variations in soil temperature.}
+```
+
+```{r}
+ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `soilTemp.x`, y = `Ecosystem Subtype.x`, color = Class)) +
+  geom_point() +
+  labs(title = "Scatterplot of Soil Temperature vs Ecosystem Subtype",
+       x = "soilTemp",
+       y = "Ecosystem Subtype",
+       color = "Class")
+```
+
+```{## The link between soil temperature and Alpha-Proteobacteria ecosystem subtype is seen in this scatterplot. The map makes it easier to see which subtypes of ecosystems are linked to certain temperature ranges.}
+
+```
+
+```{r}
+ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `soilInCaClpH.x`, y = nlcdClass.x, color = Class)) +
+  geom_point() +
+  labs(title = "soilInCaClpH vs nlcdClass",
+       x = "soilInCaClpH",
+       y = "nlcdClass",
+       color = "Class")
+```
+
+```{## This scatterplot shows how soil pH affects the distribution of Alpha-Proteobacteria across various land cover types by displaying the link between soil pH and the National Land Cover Database (NLCD) class.}
+
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>% 
+ggplot(aes(x = `Total Number of Bases`)) +
+  geom_histogram(bins = 100) 
+
+```
+
+```{## The overall distribution of total bases in the Alpha-Proteobacteria genomic data is represented by this histogram, which also displays the frequency of various sequence lengths.}
+
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>%   
+  filter(is.na(Domain) | is.na(Phylum)| is.na(Class) | is.na(Order) | is.na(Family) | is.na(Genus)) %>%
+ggplot(aes(x = `Bin Quality`)) + 
+  geom_bar(width = 0.5)
+
+```
+
+```{## This bar graph displays the high quality (HQ) and medium quality (MQ) genomic assemblies of alpha-proteobacteria bins.}
+
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>% 
+ggplot(aes(x = fct_infreq(`Site ID`))) +
+  geom_bar() +
+  coord_flip()
+
+```
+
+```{## This bar plot shows the frequency of Alpha-Proteobacteria sequences across different NEON sites.}
+
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>% 
+ggplot(aes(x = `Gene Count`)) +
+  geom_histogram(bins = 100) 
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>% 
+ggplot(aes(x = `tRNA Genes`)) +
+  geom_histogram(bins = 100) 
+
+```
+
+```{## This histogram shows the distribution of gene counts and tRNA genes in the Alpha-Proteobacteria genomic data, illustrating the genomic complexity of these bacteria.}
+
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>%   
+  filter(is.na(Domain) | is.na(Phylum)| is.na(Class) | is.na(Order) | is.na(Family) | is.na(Genus)) %>%
+ggplot(aes(x = `Assembly Type`)) + 
+  geom_bar(width = 0.5)
+
+
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>%   
+  filter(is.na(Domain) | is.na(Phylum)| is.na(Class) | is.na(Order) | is.na(Family) | is.na(Genus)) %>%
+ggplot(aes(x = `Site ID.x`)) + 
+  geom_bar(width = 0.5)
+
+```
+
+```{## This bar plot shows the distribution of genomic assemblies by type (combined vs. individual) and by site ID for Alpha-Proteobacteria.}
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>%  
+ggplot(aes(x = `Scaffold Count`, y = `Site.x`)) +
+  geom_boxplot()
+
+```
+
+```{## This boxplot shows the distribution of scaffold counts (segments of DNA) across different sites and ecosystem subtypes.}
+
+```
+
+```{r}
+ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `Depth In Meters.x`, y = `Elevation In Meters.x`, color = Class)) +
+  geom_point() +
+  labs(title = "Depth In Meters vs Elevation In Meters",
+       x = "Depth In Meters",
+       y = "Elevation In Meters",
+       color = "Class")
+
+```
+
+```{r}
+ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `Bin Completeness`, y = `Bin Contamination`, color = Class)) +
+  geom_point() +
+  labs(title = "Bin Completeness vs Bin Contamination",
+       x = "Bin Completeness",
+       y = "Bin Contamination",
+       color = "Class")
+
+
+```
+
+```{## This scatterplot shows the relationship between depth and elevation for Alpha-Proteobacteria, as well as the relationship between bin completeness and contamination.}
+
+
+```
+
+```{r}
+ggplot(NEON_MAGs_metagenomes_chemistry_alphaproteobacteria, aes(x = `Gene Count`, y = `Scaffold Count`, color = Class)) +
+  geom_point() +
+  labs(title = "Gene Count vs Scaffold Count",
+       x = "Gene Count",
+       y = "Scaffold Count",
+       color = "Class")
+
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry_alphaproteobacteria %>%  
+ggplot(aes(x = `Gene Count`, y = `Scaffold Count`)) +
+  geom_boxplot()
+
+
+```
+
+```{## This scatterplot and boxplot show the relationship between gene count and scaffold count for Alpha-Proteobacteria, indicating the genomic assembly quality.}
+
+```
+
+```{r}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON_2024_4_21.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`, `Bin Lineage`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "d__", "") %>%  
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "p__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "c__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "o__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "f__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "g__", "") %>% 
+  mutate_at("GTDB-Tk Taxonomy Lineage", str_replace, "s__", "") %>%
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"), ";", remove = FALSE) %>% 
+  mutate_at("Domain", na_if,"") %>% 
+  mutate_at("Phylum", na_if,"") %>% 
+  mutate_at("Class", na_if,"") %>% 
+  mutate_at("Order", na_if,"") %>% 
+  mutate_at("Family", na_if,"") %>% 
+  mutate_at("Genus", na_if,"") %>% 
+  mutate_at("Species", na_if,"") %>% 
+  
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-")
+```
+
+```{r}
+NEON_metagenomes <- read_tsv("data/NEON/exported_img_data_Gs0161344_NEON.tsv") %>% 
+  select(-c(`Domain`, `Sequencing Status`, `Sequencing Center`)) %>% 
+  rename(`Genome Name` = `Genome Name / Sample Name`) %>% 
+  filter(str_detect(`Genome Name`, 're-annotation', negate = T)) %>% 
+  filter(str_detect(`Genome Name`, 'WREF plot', negate = T)) 
+```
+
+```{r}
+NEON_metagenomes <- NEON_metagenomes %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-")
+```
+
+```{r}
+NEON_chemistry <- read_tsv("data/NEON/neon_plot_soilChem1_metadata.tsv") %>% 
+  # remove -COMP from genomicsSampleID
+  mutate_at("genomicsSampleID", str_replace, "-COMP", "")
+```
+
+```{r}
+NEON_MAGs_metagenomes_chemistry <- NEON_MAGs %>% 
+  left_join(NEON_metagenomes, by = "Sample Name") %>% 
+  left_join(NEON_chemistry, by = c("Sample Name" = "genomicsSampleID")) %>% 
+  rename("label" = "Bin ID")
+
+```
+
+```{r}
+tree_arc <- read.tree("data/NEON/gtdbtk.ar53.decorated.tree")
+tree_bac <- read.tree("data/NEON/gtdbtk.bac120.decorated.tree")
+
+```
+
+```{r}
+# Make a vector with the internal node labels
+node_vector_bac = c(tree_bac$tip.label,tree_bac$node.label)
+
+# Search for your Phylum or Class to get the node
+grep("Alphaproteobacteria", node_vector_bac, value = TRUE)
+
+
+```
+
+```{r}
+match(grep("Alphaproteobacteria", node_vector_bac, value = TRUE), node_vector_bac)
+```
+
+```{r}
+# First need to preorder tree before extracting. N
+tree_bac_preorder <- Preorder(tree_bac)
+tree_Alphaproteobacteria <- Subtree(tree_bac_preorder, 3171)
+```
+
+```{r}
+NEON_MAGs_Alphaproteobacteria <- NEON_MAGs_metagenomes_chemistry %>% 
+  filter(Phylum == "Alphaproteobacteria")
+
+```
+
+```{r}
+ggtree(tree_Alphaproteobacteria, layout="circular")  %<+%
+  NEON_MAGs_metagenomes_chemistry + 
+  geom_tiplab(size=2, hjust=-.1) +
+  xlim(0,30) +
+  geom_point(mapping=aes(color=Class))
+
+```
+
+```{## This circular phylogenetic tree represents the evolutionary relationships among Alpha-Proteobacteria, with annotations for different sites and assembly types.}
+```
+
+```{r}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-")
+```
+
+```{r}
+NEON_MAGs_bact_ind <- NEON_MAGs %>% 
+  filter(Domain == "Bacteria") %>% 
+  filter(`Assembly Type` == "Individual") 
+```
+
+```{r}
+colnames(NEON_MAGs_bact_ind)
+```
+
+```{r}
+NEON_MAGs_bact_ind %>% 
+  ggplot(aes(x = `Site ID`, y = `Phylum`, color = Phylum)) +
+  geom_point() +
+  labs(title = "Site ID vs Number of Genes by Phylum")
+
+```
+
+```{## This is a scatter plot that shows how different phyla's gene numbers are distributed across site. Every dot is a unique combination of a site and a phylum; the phylum is shown by the dot's position on the y-axis, and the site is indicated by its position on the x-axis. The legend on the right side of the graph indicates which phyla are represented by the color of the dots.}
+
+
+```
+
+```{r}
+NEON_MAGs <- read_csv("data/NEON/GOLD_Study_ID_Gs0161344_NEON.csv") %>% 
+  # remove columns that are not needed for data analysis
+  select(-c(`GOLD Study ID`, `Bin Methods`, `Created By`, `Date Added`)) %>% 
+  # create a new column with the Assembly Type
+  mutate("Assembly Type" = case_when(`Genome Name` == "NEON combined assembly" ~ `Genome Name`,
+                            TRUE ~ "Individual")) %>% 
+  mutate_at("Assembly Type", str_replace, "NEON combined assembly", "Combined") %>% 
+  separate(`GTDB-Tk Taxonomy Lineage`, c("Domain", "Phylum", "Class", "Order", "Family", "Genus"), "; ", remove = FALSE) %>% 
+  # Get rid of the the common string "Soil microbial communities from "
+  mutate_at("Genome Name", str_replace, "Terrestrial soil microbial communities from ", "") %>% 
+  # Use the first `-` to split the column in two
+  separate(`Genome Name`, c("Site","Sample Name"), " - ") %>% 
+  # Get rid of the the common string "S-comp-1"
+  mutate_at("Sample Name", str_replace, "-comp-1", "") %>%
+  # separate the Sample Name into Site ID and plot info
+  separate(`Sample Name`, c("Site ID","subplot.layer.date"), "_", remove = FALSE,) %>% 
+  # separate the plot info into 3 columns
+  separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-")
+
+```
+
+```{r}
+kable(
+  NEON_MAGs %>% 
+    filter(Site == "Chase Lake Wetlands, North Dakota, USA")
+)
+```
+
+```{r}
+ NEON_MAGs %>% 
+    filter(Site == "Chase Lake Wetlands, North Dakota, USA")%>%
+    ggplot(aes(x = Class))+
+    geom_bar()+
+    coord_flip()
+```
+
+```{## The distribution of bacterial classes in the Chase Lake Wetlands is shown in this bar graph. The y-axis lists the different bacterial classes found in the samples, while the x-axis indicates the number of incidences for each bacterial class.}
+
+
+```
+
+```{r}
+library(ggplot2)
+
+# Create data frame
+data <- data.frame(
+  Site = c(
+   
+    "Chase Lake Wetlands, North Dakota, USA"
+    
+  ),
+  Count = c(69)
+)
+
+# Create bar plot
+ggplot(data, aes(x = reorder(Site, Count), y = Count)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  labs(title = "Count of Phylum proteobacteria at Each Site", x = "Site", y = "Count") +
+  theme_minimal()
+
+```
+
+![](images/Screenshot 2024-05-19 at 8.11.46 PM.png)
+
+![](images/Screenshot 2024-05-19 at 8.10.53 PM.png)
+
+
